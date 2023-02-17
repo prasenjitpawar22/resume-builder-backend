@@ -1,0 +1,28 @@
+{
+  "name": "resume-builder-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "backend service of resume-builder",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "prasenjitpawar22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prasenjitpawar22/resume-builder-backend/issues"
+  },
+  "homepage": "https://github.com/prasenjitpawar22/resume-builder-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "nodemon": "^2.0.20",
+    "puppeteer": "^19.7.1"
+  }
+}
