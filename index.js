@@ -5,7 +5,7 @@ import cors from 'cors';
 import resumeRoute from './routes/Resume.js'
 import userRoute from './routes/User.js';
 import connectDb from './db.js';
-import featureHeaderRoute from './routes/FeatureHeader.js';
+import featureHeaderRoute from './routes/Feature.js';
 
 config();
 

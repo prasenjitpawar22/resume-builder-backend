@@ -33,19 +33,15 @@ resumeRoute.get("/get-resume-header", async (req, res) => {
 })
 
 //delete header
-resumeRoute.delete("/delete-resume-header", async (req, res) => {
+resumeRoute.post("/delete-resume-header", async (req, res) => {
     try {
-        ResumeHeader.findByIdAndDelete(req.body.id, function (error) {
-            if (!error) {
-                ResumeHeader
-                return res.status(200).send('done')
-            }
-            else {
-                return res.send(error)
-            }
-        })
-    } catch (error) {
-        console.log(error);
+        let { id } = req.body
+        if (!id) return res.status(404).send('id not found')
+
+        await ResumeHeader.deleteOne({ _id: id })
+        return res.status(200).send('deleted')
+    }
+    catch (error) {
         return res.send(error)
     }
 })
