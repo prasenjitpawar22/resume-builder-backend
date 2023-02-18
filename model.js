@@ -13,7 +13,7 @@ const UserSchema = new Schema({
 
 export const User = model("User", UserSchema);
 
-
+// header- resume and feature
 const ResumeHeaderSchema = new Schema({
     fullname: {
         type: String,
@@ -44,3 +44,38 @@ const FeatureHeaderSchema = new Schema({
 })
 
 export const FeatureHeader = model("FeatureHeader", FeatureHeaderSchema)
+
+
+//education- resume and feature
+const ResumeEduSchema = new Schema({
+    university: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    start: { type: String },
+    end: { type: String },
+})
+
+export const ResumeEdu = model("ResumeEducation", ResumeEduSchema)
+
+const FeatureEduSchema = new Schema({
+    _id: {
+        type: String,
+        required: true
+    },
+    university: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+    },
+    start: { type: String, required: true},
+    end: { type: String, required: true },
+})
+
+export const FeatureEdu = model("FeatureEducation", FeatureEduSchema)

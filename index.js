@@ -5,7 +5,7 @@ import cors from 'cors';
 import resumeRoute from './routes/Resume.js'
 import userRoute from './routes/User.js';
 import connectDb from './db.js';
-import featureHeaderRoute from './routes/Feature.js';
+import featureRoute from './routes/Feature.js';
 
 config();
 
@@ -18,7 +18,7 @@ await connectDb()
 
 app.use('/resume', resumeRoute)
 app.use('/user', userRoute)
-app.use('/feature', featureHeaderRoute)
+app.use('/feature', featureRoute)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

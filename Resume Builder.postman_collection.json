@@ -1,0 +1,36 @@
+{
+	"info": {
+		"_postman_id": "1f564522-6946-4a0c-a40a-51a64f358f24",
+		"name": "Resume Builder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17825667"
+	},
+	"item": [
+		{
+			"name": "Resume",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feature",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

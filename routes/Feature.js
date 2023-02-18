@@ -1,15 +1,13 @@
 import express, { Router } from 'express'
 
-import { FeatureHeader } from '../model.js'
+import { FeatureEdu, FeatureHeader } from '../model.js'
 
-const featureHeaderRoute = Router()
+const featureRoute = Router()
 
 // get all feature header data 
-featureHeaderRoute.get("/get-all-header", async (req, res) => {
-    console.log('in gell a');
+featureRoute.get("/get-all-header", async (req, res) => {
     try {
         const featureHeader = await FeatureHeader.find({})
-        console.log(featureHeader);
         return res.send(featureHeader)
     }
     catch (error) {
@@ -17,8 +15,8 @@ featureHeaderRoute.get("/get-all-header", async (req, res) => {
     }
 })
 
-// post feature header
-featureHeaderRoute.post("/set-feature-header", async (req, res) => {
+// create feature header
+featureRoute.post("/set-feature-header", async (req, res) => {
     const featureHeader = new FeatureHeader(req.body)
     try {
         await featureHeader.save()
@@ -31,7 +29,7 @@ featureHeaderRoute.post("/set-feature-header", async (req, res) => {
 })
 
 // delete feature header
-featureHeaderRoute.post("/remove-feature-header", async (req, res) => {
+featureRoute.post("/remove-feature-header", async (req, res) => {
     try {
         let { id } = req.body
         if (!id) return res.status(404).send('id not found')
@@ -44,5 +42,45 @@ featureHeaderRoute.post("/remove-feature-header", async (req, res) => {
     }
 })
 
+// -----edu
+// get all education 
+featureRoute.get("/get-all-feature-education", async (req, res) => {
+    try {
+        const featureEdu = await FeatureEdu.find({})
+        console.log(featureEdu);
+        return res.send(featureEdu)
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
 
-export default featureHeaderRoute
+//create 
+featureRoute.post("/set-feature-education", async (req, res) => {
+    console.log('asdasd');
+    const featureEdu = new FeatureEdu(req.body)
+    try {
+        await featureEdu.save()
+        return res.status(200).send(featureEdu)
+    }
+    catch (error) {
+        res.send(error)
+        console.log(error);
+    }
+})
+
+// delete  
+featureRoute.post("/remove-feature-education", async (req, res) => {
+    try {
+        let { id } = req.body
+        if (!id) return res.status(404).send('id not found')
+
+        await FeatureEdu.findByIdAndDelete({_id:id})
+        return res.status(200).send('deleted')
+    }
+    catch (error) {
+        return res.status(500).send(error)
+    }
+})
+
+export default featureRoute
