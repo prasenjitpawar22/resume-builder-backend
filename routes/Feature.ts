@@ -1,5 +1,5 @@
 import  { Router, Response, Request } from 'express'
-import { Mongoose, MongooseError } from 'mongoose'
+import { Model, Mongoose, MongooseError } from 'mongoose'
 
 import { FeatureEdu, FeatureExp, FeatureHeader } from '../model'
 
@@ -97,8 +97,8 @@ featureRoute.post("/create-feature-experience",async (req, res) => {
         return res.status(200).send(featureExp)
     }
     catch (error) {
-        res.status(500).send(error)
         console.log(error);
+        res.status(500).send(error)
     }
 })
 
@@ -109,10 +109,15 @@ featureRoute.post("/remove-feature-experience", async (req, res) => {
         if (!id) return res.status(404).send('id not found')
 
         await FeatureExp.findByIdAndDelete({_id:id})
-        return res.status(200).send('deleted')
+        .then(()=> {
+            return res.status(200).send('deleted')
+        })
+        .catch((error:MongooseError) => {
+            return res.status(500).send(error.message)
+        })
     }
     catch (error) {
-        return res.status(500).send(error)
+        return res.status(400).send(error)
     }
 })
 
@@ -120,10 +125,10 @@ featureRoute.post("/remove-feature-experience", async (req, res) => {
 featureRoute.get("/get-all-feature-experience", async (req, res) => {
     try {
         const featureEdu = await FeatureExp.find({})
-        return res.send(featureEdu)
+        return res.status(200).send(featureEdu)
     }
     catch (error) {
-        res.send(error)
+        res.status(500).send(error)
     }
 })
 
