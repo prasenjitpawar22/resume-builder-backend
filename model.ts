@@ -89,3 +89,15 @@ const FeatureEduSchema = new Schema({
 })
 
 export const FeatureEdu = model("FeatureEducation", FeatureEduSchema)
+
+//exp - feature
+const FeatureExpSchema = new Schema({
+    _id: { type: String, required: true },
+    company: {type :String, required: true},
+    start:{type :String, required: true},
+    end: {type :String},
+    current: {type :String},
+    description: {type: [String]}
+})
+
+export const FeatureExp = model("FeatureExp", FeatureExpSchema)
