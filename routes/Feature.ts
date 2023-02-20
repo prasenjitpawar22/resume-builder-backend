@@ -1,6 +1,7 @@
-import express, { Router } from 'express'
+import  { Router, Response, Request } from 'express'
+import { Mongoose, MongooseError } from 'mongoose'
 
-import { FeatureEdu, FeatureHeader } from '../model.js'
+import { FeatureEdu, FeatureHeader } from '../model'
 
 const featureRoute = Router()
 
@@ -47,7 +48,6 @@ featureRoute.post("/remove-feature-header", async (req, res) => {
 featureRoute.get("/get-all-feature-education", async (req, res) => {
     try {
         const featureEdu = await FeatureEdu.find({})
-        console.log(featureEdu);
         return res.send(featureEdu)
     }
     catch (error) {
@@ -56,15 +56,20 @@ featureRoute.get("/get-all-feature-education", async (req, res) => {
 })
 
 //create 
-featureRoute.post("/set-feature-education", async (req, res) => {
-    console.log('asdasd');
-    const featureEdu = new FeatureEdu(req.body)
+featureRoute.post("/set-feature-education", async (req, res:Response) => {
     try {
+        const featureEdu = new FeatureEdu(req.body)
         await featureEdu.save()
+        .then((r)=> {console.log(r);
+        })
+        .catch((e:MongooseError)=> {
+            console.log(e.message);
+            return res.status(500).send(e.message)
+        })
         return res.status(200).send(featureEdu)
     }
-    catch (error) {
-        res.send(error)
+    catch (error:any) {
+        res.status(400).send(error)
         console.log(error);
     }
 })

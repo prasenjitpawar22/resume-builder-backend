@@ -2,10 +2,10 @@ import express, { Router } from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
 
-import resumeRoute from './routes/Resume.js'
-import userRoute from './routes/User.js';
-import connectDb from './db.js';
-import featureRoute from './routes/Feature.js';
+import resumeRoute from './routes/Resume'
+import userRoute from './routes/User';
+import connectDb from './db';
+import featureRoute from './routes/Feature';
 
 config();
 
@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cors())
 const port = process.env.PORT;
 
-await connectDb()
+connectDb()
 
 app.use('/resume', resumeRoute)
 app.use('/user', userRoute)
