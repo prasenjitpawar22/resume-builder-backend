@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 
-import { ResumeEdu, ResumeHeader } from '../model'
+import { ResumeEdu, ResumeExp, ResumeHeader } from '../model'
 import { downloadPdf } from '../helper/downloadPdf'
 import { MongooseError } from 'mongoose'
 
@@ -76,7 +76,7 @@ resumeRoute.post("/add-resume-education", async (req: Request, res: Response) =>
   }
 })
 
-//get all
+//get all edu
 resumeRoute.get("/get-resume-education", async (req: Request, res: Response) => {
   const edu = await ResumeEdu.find({})
   try {
@@ -104,4 +104,53 @@ resumeRoute.post("/delete-resume-education", async (req, res) => {
     return res.send(error)
   }
 })
+
+// resume exp request-------------------------------------------------------------------
+// create 
+resumeRoute.post("/create-resume-experience", async (req, res) => {
+  const expData = new ResumeExp(req.body)
+  console.log(expData);
+  
+  try {
+    await expData.save()
+    return res.status(200).send('created')
+  } catch (error:any) {
+    return res.status(500).send(error.message)
+  }
+})
+
+//delete exp
+resumeRoute.post("/delete-resume-experience", async (req, res) => {
+  try {
+    let { id } = req.body
+    if (!id) return res.status(404).send('id not found')
+
+    await ResumeExp.deleteOne({ _id: id })
+      .then(() => {
+        return res.status(200).send('deleted')
+      })
+      .catch((error: MongooseError) => {
+        return res.status(500).send("invalid id: "+ error.message)
+      })
+  }
+  catch (error) {
+    return res.send(error)
+  }
+})
+
+
+//get all exp
+resumeRoute.get("/get-resume-experience", async (req: Request, res: Response) => {
+  const edu = await ResumeExp.find({})
+  try {
+    res.status(200).send(edu);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+})
+
+
+
+
+
 export default resumeRoute

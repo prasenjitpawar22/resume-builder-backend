@@ -93,11 +93,26 @@ export const FeatureEdu = model("FeatureEducation", FeatureEduSchema)
 //exp - feature
 const FeatureExpSchema = new Schema({
     _id: { type: String, required: true },
-    company: {type :String, required: true},
-    start:{type :String, required: true},
-    end: {type :String},
-    current: {type :String},
-    description: {type: [String]}
+    position: { type: String, required: true },
+    company: { type: String, required: true },
+    start: { type: String, required: true },
+    end: { type: String },
+    current: { type: String },
+    description: { type: [String] }
 })
 
 export const FeatureExp = model("FeatureExp", FeatureExpSchema)
+
+// exp - resume 
+//exp - feature
+const ResumeExpSchema = new Schema({
+    _id: { type: String, required: true },
+    company: { type: String, required: true },
+    position: { type: String, required: true },
+    start: { type: String, required: true },
+    end: { type: String },
+    current: { type: String },
+    description: { type: [String] },
+})
+
+export const ResumeExp = model("ResumeExp", ResumeExpSchema)
