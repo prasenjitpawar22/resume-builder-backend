@@ -1,18 +1,5 @@
 import { Schema, model } from "mongoose";
 
-const UserSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    age: {
-        type: Number,
-        default: 0,
-    },
-});
-
-export const User = model("User", UserSchema);
-
 // header- resume and feature
 const ResumeHeaderSchema = new Schema({
     _id: {

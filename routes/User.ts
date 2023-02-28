@@ -1,26 +1,28 @@
-import express, { Router } from 'express'
-import { User } from '../model.js'
+import { Request, Response, Express, Router } from "express";
 
-const userRoute = Router()
+import {User, validateUser } from '../models/User'
+const userRoute = Router();
 
-userRoute.post("/add_user", async (request, response) => {
-    const user = new User(request.body);
-    try {
-        await user.save();
-        response.send(user);
-    } catch (error) {
-        response.status(500).send(error);
+userRoute.post('/register', async (req: Request, res: Response) => {
+    // First Validate The Request
+    const { error } = validateUser(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
     }
-});
 
-// ...
-userRoute.get("/users", async (request, response) => {
-    const users = await User.find({});
-
-    try {
-        response.send(users);
-    } catch (error) {
-        response.status(500).send(error);
+    // Check if this user already exisits
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+        return res.status(400).send('That user already exisits!');
+    } else {
+        // Insert the new user if they do not exist yet
+        user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
+        });
+        await user.save();
+        res.send(user);
     }
 });
 

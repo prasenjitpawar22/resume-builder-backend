@@ -3,9 +3,9 @@ import { config } from 'dotenv';
 import cors from 'cors';
 
 import resumeRoute from './routes/Resume'
-import userRoute from './routes/User';
 import connectDb from './db';
 import featureRoute from './routes/Feature';
+import userRoute from './routes/User';
 
 config();
 
