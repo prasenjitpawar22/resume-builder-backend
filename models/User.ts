@@ -28,9 +28,17 @@ export const User = model("User", new Schema({
     }
 }));
 
-export function validateUser(user: User) {
+export function validateResgisterUser(user: User) {
     const schema = Joi.object({
         name: Joi.string().min(5).max(50).required(),
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(5).max(255).required()
+    })
+    return schema.validate(user);
+}
+
+export function validateLoginUser(user: User) {
+    const schema = Joi.object({
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(255).required()
     })

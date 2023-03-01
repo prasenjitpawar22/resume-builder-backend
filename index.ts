@@ -7,12 +7,12 @@ import connectDb from './db';
 import featureRoute from './routes/Feature';
 import userRoute from './routes/User';
 
-config();
+
 
 const app = express();
 app.use(express.json())
 app.use(cors())
-const port = process.env.PORT;
+const port = process.env.PORT
 
 connectDb()
 

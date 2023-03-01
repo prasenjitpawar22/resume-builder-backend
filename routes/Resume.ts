@@ -1,10 +1,13 @@
 import { Router, Request, Response } from 'express'
+import { MongooseError } from 'mongoose'
+
+import auth from '../middleware/auth';
 
 import { ResumeEdu, ResumeExp, ResumeHeader } from '../model'
 import { downloadPdf } from '../helper/downloadPdf'
-import { MongooseError } from 'mongoose'
 
 const resumeRoute = Router()
+resumeRoute.use(auth)
 
 resumeRoute.get("/test", (req, res) => {
   res.send("send success")
