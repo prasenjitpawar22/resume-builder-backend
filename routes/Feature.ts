@@ -1,9 +1,12 @@
 import  { Router, Response, Request } from 'express'
 import { Model, Mongoose, MongooseError } from 'mongoose'
+import auth from '../middleware/auth'
 
 import { FeatureEdu, FeatureExp, FeatureHeader } from '../model'
 
 const featureRoute = Router()
+featureRoute.use(auth)
+
 
 // get all feature header data 
 featureRoute.get("/get-all-header", async (req, res) => {

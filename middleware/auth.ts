@@ -4,19 +4,18 @@ import devEnvConfig from '../dev-env.config';
 
 const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
-
     const header = req.headers.authorization
     const token = header?.split(' ')[1]
-
-    console.log(token);
+    let validUserId;
+    
     if (token) {
       const decodedToken = jwt.verify(token, devEnvConfig.token_key) as JwtPayload;
-      const userId = decodedToken.sub;
-      console.log("userid: sub: ", userId);
-
-      if (req.body.userId && req.body.userId !== userId) {
+      // console.log('decoded token', decodedToken._id);
+      validUserId = decodedToken._id
+      if (req.body.userId && req.body.userId !== validUserId) {
         throw 'Invalid user ID';
       } else {
+        req.body.validUserId = validUserId
         next();
       }
     }
