@@ -3,7 +3,7 @@ import { MongooseError } from 'mongoose'
 
 import auth from '../middleware/auth';
 
-import { ResumeEdu, ResumeExp, ResumeHeader } from '../model'
+import { ResumeEdu, ResumeExp, ResumeHeader } from '../models/Resume'
 import { downloadPdf } from '../helper/downloadPdf'
 
 const resumeRoute = Router()

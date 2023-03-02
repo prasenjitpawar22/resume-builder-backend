@@ -6,16 +6,16 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const header = req.headers.authorization
     const token = header?.split(' ')[1]
-    let validUserId;
+    let userid;
     
     if (token) {
       const decodedToken = jwt.verify(token, devEnvConfig.token_key) as JwtPayload;
       // console.log('decoded token', decodedToken._id);
-      validUserId = decodedToken._id
-      if (req.body.userId && req.body.userId !== validUserId) {
+      userid = decodedToken._id
+      if (req.body.userId && req.body.userId !== userid) {
         throw 'Invalid user ID';
       } else {
-        req.body.validUserId = validUserId
+        req.body.userid = userid
         next();
       }
     }
