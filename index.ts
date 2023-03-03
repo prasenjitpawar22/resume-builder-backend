@@ -2,24 +2,21 @@ import express, { Router } from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
 
-import resumeRoute from './routes/Resume'
-import connectDb from './db';
-import featureRoute from './routes/Feature';
-import userRoute from './routes/User';
+// import featureRoute from './';
+import userRoute from "./routes/user/user.routes"
+import resumeRoutes from "./routes/resume/resume.routes"
 
-
+config()
 
 const app = express();
 app.use(express.json())
 app.use(cors())
 const port = process.env.PORT
 
-connectDb()
-
-app.use('/resume', resumeRoute)
+// app.use('/resume', resumeRoute)
+// app.use('/feature', featureRoute)
 app.use('/user', userRoute)
-app.use('/feature', featureRoute)
-
+app.use('/resume', resumeRoutes)
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
