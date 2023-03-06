@@ -15,8 +15,8 @@ export const createUser = async (user: Omit<User, "id">): Promise<Omit<User, "pa
             name,
             password: hashPassword,
         },
-        select:{
-            id:true,
+        select: {
+            id: true,
             email: true,
             name: true
         }
@@ -30,6 +30,14 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
             email
         }
     })
+}
+
+export const getAllUsers = async (): Promise<User[]> => {
+    return await db.user.findMany()
+}
+
+export const removeAllUsers = async () => {
+    return await db.user.deleteMany()
 }
 
 // export

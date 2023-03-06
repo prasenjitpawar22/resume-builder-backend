@@ -10,7 +10,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     
     if (token) {
       const decodedToken = jwt.verify(token, process.env.PRIVATE_KEY!) as JwtPayload;
-      // console.log('decoded token', decodedToken._id);
+      console.log('decoded token', decodedToken._id);
       userId = decodedToken._id
       if (req.body.userId && req.body.userId !== userId) {
         throw 'Invalid user ID';

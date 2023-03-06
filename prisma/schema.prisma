@@ -27,7 +27,7 @@ model User {
 // Creating a model called ResumeHeader  
 model ResumeHeader {
   id       String  @unique @default(uuid())
-  user     User    @relation(fields: [userId], references: [id])
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   fullname String
   contact  String
@@ -43,7 +43,7 @@ model ResumeEducation {
   location   String
   start      DateTime
   end        DateTime?
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 }
 
@@ -56,7 +56,7 @@ model ResumeExperience {
   end         String?
   current     Boolean?
   description String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
 
@@ -69,7 +69,7 @@ model FeatureHeader {
   linkedin String?
   github   String?
   website  String?
-  user     User    @relation(fields: [userId], references: [id])
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
 }
 
@@ -80,7 +80,7 @@ model FeatureEducation {
   location   String
   start      DateTime
   end        DateTime?
-  user       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 }
 
@@ -93,6 +93,6 @@ model FeatureExperience {
   end         String?
   current     Boolean?
   description String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }

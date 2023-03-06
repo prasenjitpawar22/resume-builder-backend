@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { PrismaClient } from '@prisma/client'
 
 
-import { createUser, getUserByEmail } from './user.service'
+import { createUser, getAllUsers, getUserByEmail, removeAllUsers } from './user.service'
 import auth from "../../middleware/auth";
 const userRoute = Router();
 
@@ -57,7 +57,9 @@ userRoute.post('/login', async (req: Request, res: Response) => {
 
 //verify token
 userRoute.post('/', auth, async (req: Request, res: Response) => {
-  const userId = req.body.userId
+  const {userId} = req.body
+  console.log(userId);
+  
   try {
     if (userId) {
       const userFound = await getUserByEmail(userId)
@@ -67,12 +69,34 @@ userRoute.post('/', auth, async (req: Request, res: Response) => {
       else {
         return res.status(401).send('user not valid')
       }
-    } else {
+    } 
+    else {
       return res.status(401).send('userid not found')
     }
   } catch (error: any) {
     return res.status(500).send(error.message)
   }
 })
+
+//get all user
+userRoute.get('/all-users',async (req:Request, res:Response) => {
+  const users = await getAllUsers()
+  console.log(users);
+  
+  return res.send(users)
+})
+
+//
+// remove all users
+userRoute.post('/remove-all-users',async (req:Request, res:Response) => {
+  try {
+    await removeAllUsers()
+    return res.send('done')
+    
+  } catch (error:any) {
+    return res.status(500).send(error.message)
+  }
+})
+
 
 export default userRoute

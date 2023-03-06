@@ -27,6 +27,50 @@
 					"response": []
 				},
 				{
+					"name": "get exp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlResume}}/get-resume-experience",
+							"host": [
+								"{{baseUrlResume}}"
+							],
+							"path": [
+								"get-resume-experience"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get header",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWVjODg5YS05MmFlLTQzNjYtYjAzMC1mNzI0NTU1NDU4NjgiLCJpYXQiOjE2Nzc4NTU1Nzd9.WGwXnlcAfys8HvSBmCb9jaeN6BglmvA6FrWVl8wGcxs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlResume}}/get-all-header",
+							"host": [
+								"{{baseUrlResume}}"
+							],
+							"path": [
+								"get-all-header"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create edu",
 					"request": {
 						"method": "POST",
@@ -47,6 +91,59 @@
 							],
 							"path": [
 								"add-resume-education"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create header",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJmMTE1NDZlMC04OWVjLTRmZmItOWE4Zi1kZjZiMmVkN2I3M2QiLCJpYXQiOjE2Nzc4NTM4MDR9.9ekEQNI4mphZUZeiYyBh_s5bqTCwqHumOy2a8Z16WV0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\":\"prasen\",\r\n    \"contact\": \"12312312\",\r\n    \"userId\": \"f11546e0-89ec-4ffb-9a8f-df6b2ed7b73d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlResume}}/create-header",
+							"host": [
+								"{{baseUrlResume}}"
+							],
+							"path": [
+								"create-header"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create exp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlResume}}/create-resume-experience",
+							"host": [
+								"{{baseUrlResume}}"
+							],
+							"path": [
+								"create-resume-experience"
 							]
 						}
 					},
@@ -105,23 +202,6 @@
 					"response": []
 				},
 				{
-					"name": "create exp",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrlResume}}/create-resume-experience",
-							"host": [
-								"{{baseUrlResume}}"
-							],
-							"path": [
-								"create-resume-experience"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "delete exp",
 					"request": {
 						"method": "POST",
@@ -133,23 +213,6 @@
 							],
 							"path": [
 								"delete-resume-experience"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get exp",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrlResume}}/get-resume-experience",
-							"host": [
-								"{{baseUrlResume}}"
-							],
-							"path": [
-								"get-resume-experience"
 							]
 						}
 					},
