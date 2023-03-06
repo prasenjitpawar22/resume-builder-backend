@@ -5,13 +5,12 @@ import _ from 'lodash';
 import { PrismaClient } from '@prisma/client'
 
 
-import { createUser, getAllUsers, getUserByEmail, removeAllUsers } from './user.service'
+import { createUser, getAllUsers, getUserByEmail, getUserById, removeAllUsers } from './user.service'
 import auth from "../../middleware/auth";
 const userRoute = Router();
 
 
 userRoute.post('/register', async (req: Request, res: Response) => {
-  // after validation
   try {
     let user = await getUserByEmail(req.body.email)
 
@@ -20,9 +19,8 @@ userRoute.post('/register', async (req: Request, res: Response) => {
     } else {
       const user = req.body
       const newUser = await createUser(user)
-      const token = jwt.sign({ id: newUser.email }, process.env.PRIVATE_KEY!);
+      const token = jwt.sign({ id: newUser.id }, process.env.PRIVATE_KEY!);
 
-      // const sendData = _.pick(newUser, )
       return res.send({ token, newUser });
     }
   } catch (error: any) {
@@ -30,15 +28,15 @@ userRoute.post('/register', async (req: Request, res: Response) => {
   }
 });
 
+
+/* 1. It is creating a route for the user to login.
+2. It is using the async/await syntax to get the user by email.
+3. It is using the bcrypt library to compare the password.
+4. It is using the jwt library to sign the token.
+5. It is using the lodash library to pick the email and name from the user object.
+6. It is sending the email, name, and token back to the user. */
 userRoute.post('/login', async (req: Request, res: Response) => {
-  // First Validate The HTTP Request
-
-  // const { error } = validateLoginUser(req.body);
-  // if (error) {
-  //     return res.status(400).send(error.details[0].message);
-  // }
-
-  //  Now find the user by their email address
+ 
   let user = await getUserByEmail(req.body.email);
 
   if (!user) {
@@ -49,7 +47,7 @@ userRoute.post('/login', async (req: Request, res: Response) => {
   if (!validPassword) {
     return res.status(400).send('Incorrect email or password.');
   }
-  const token = jwt.sign({ id: user.email }, process.env.PRIVATE_KEY!);
+  const token = jwt.sign({ id: user.id }, process.env.PRIVATE_KEY!);
 
   const { email, name } = _.pick(user, 'name', 'email')
   res.send({ email, name, token });
@@ -62,7 +60,7 @@ userRoute.post('/', auth, async (req: Request, res: Response) => {
   
   try {
     if (userId) {
-      const userFound = await getUserByEmail(userId)
+      const userFound = await getUserById(userId)
       if (userFound) {
         return res.status(200).send(userFound)
       }
@@ -86,7 +84,6 @@ userRoute.get('/all-users',async (req:Request, res:Response) => {
   return res.send(users)
 })
 
-//
 // remove all users
 userRoute.post('/remove-all-users',async (req:Request, res:Response) => {
   try {

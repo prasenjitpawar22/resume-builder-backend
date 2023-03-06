@@ -13,9 +13,9 @@ resumeRoutes.post('/create-header', auth, async (Request: Request, Response: Res
     //after validation
     try {
         const header = await createHeader(Request.body)
-        Response.status(200).send(header)
+        return Response.status(200).send(header)
     } catch (error: any) {
-        Response.status(500).send(error.message)
+        return Response.status(500).send(error.message)
     }
 })
 
@@ -25,19 +25,21 @@ resumeRoutes.post('/delete-header', auth, async (Request: Request, Response: Res
     //after validation
     try {
         await deleteHeader(Request.body.id)
-        Response.status(200).send('deleted')
+        return Response.status(200).send('deleted')
     } catch (error: any) {
-        Response.status(500).send(error.message)
+        return Response.status(500).send(error.message)
     }
 })
 
+/* Creating a route that is being called `/get-all-header` and it is using the `auth` middleware. It is
+also using the `allHeader` function from the `resume.service` file. */
 resumeRoutes.get('/get-all-header', auth, async (Request: Request, Response: Response) => {
     //after validation
     try {
         const headers =  await allHeader(Request.body.userId)
-        Response.status(200).send(headers)
+        return Response.status(200).send(headers)
     } catch (error: any) {
-        Response.status(500).send(error.message)
+        return Response.status(500).send(error.message)
     }
 })
 

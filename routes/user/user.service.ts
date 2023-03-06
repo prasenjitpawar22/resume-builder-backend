@@ -32,6 +32,14 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
     })
 }
 
+export const getUserById = async (id: string): Promise<User | null> => {
+    return db.user.findUnique({
+        where: {
+            id
+        }
+    })
+}
+
 export const getAllUsers = async (): Promise<User[]> => {
     return await db.user.findMany()
 }
