@@ -9,7 +9,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization
     const token = header?.split(' ')[1]
     let userId;
-    console.log(process.env.PRIVATE_KEY);
+    // console.log(process.env.PRIVATE_KEY);
 
     if (token) {
       const decodedToken = jwt.verify(token, process.env.PRIVATE_KEY!) as JwtPayload;
