@@ -8,6 +8,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const header = req.headers.authorization
     const token = header?.split(' ')[1]
+    
     let userId;
     // console.log(process.env.PRIVATE_KEY);
 

@@ -36,7 +36,7 @@ userRoute.post('/register', async (req: Request, res: Response) => {
 5. It is using the lodash library to pick the email and name from the user object.
 6. It is sending the email, name, and token back to the user. */
 userRoute.post('/login', async (req: Request, res: Response) => {
- 
+  
   let user = await getUserByEmail(req.body.email);
 
   if (!user) {
@@ -50,13 +50,15 @@ userRoute.post('/login', async (req: Request, res: Response) => {
   const token = jwt.sign({ id: user.id }, process.env.PRIVATE_KEY!);
 
   const { email, name } = _.pick(user, 'name', 'email')
+  // console.log(token, email, name);
+  
   res.send({ email, name, token });
 })
 
 //verify token
 userRoute.post('/', auth, async (req: Request, res: Response) => {
   const {userId} = req.body
-  console.log(userId);
+  // console.log(userId);
   
   try {
     if (userId) {
@@ -79,7 +81,7 @@ userRoute.post('/', auth, async (req: Request, res: Response) => {
 //get all user
 userRoute.get('/all-users',async (req:Request, res:Response) => {
   const users = await getAllUsers()
-  console.log(users);
+  // console.log(users);
   
   return res.send(users)
 })
