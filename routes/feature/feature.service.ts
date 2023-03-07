@@ -1,9 +1,10 @@
-import { FeatureEducation, FeatureHeader, User } from "@prisma/client"
+import { FeatureEducation, FeatureExperience, FeatureHeader, User } from "@prisma/client"
 import { randomUUID } from "crypto"
+
 import { db } from "../../utils/db.server"
 
 
-// ************************header routes*********************************************************************
+// ************************header serives*********************************************************************
 /**
  * This function returns a list of all the headers for a given user.
  * @param {string} id - string - the id of the user
@@ -68,8 +69,8 @@ export const allHeader = async (id: string): Promise<FeatureHeader[]> => {
 
     return headers
 }
-    
-// ************************education routes*********************************************************************
+
+// ************************education serives*********************************************************************
 /**
  * It takes in a data object, and creates a new education object in the database
  * @param data - Omit<FeatureEducation, "id">
@@ -84,8 +85,7 @@ export const createEducation = async (data: Omit<FeatureEducation, "id">): Promi
     const { end, location, start, university, userId } = data
     const startDate = new Date(start)
     const endDate = end ? new Date(end) : null
-    console.log(startDate, endDate);
-    
+
     const education = await db.featureEducation.create({
         data: {
             id: randomUUID(),
@@ -120,6 +120,47 @@ export const allEducation = async (id: string): Promise<FeatureEducation[]> => {
  */
 export const deleteEducation = async (id: string): Promise<void> => {
     await db.featureEducation.delete({
+        where: {
+            id: id
+        }
+    })
+}
+
+// ************************experience service*********************************************************************
+
+export const createExperience = async (data: Omit<FeatureExperience, "id">): Promise<FeatureExperience> => {
+    const { end, company, start, current, userId, description, position } = data
+    const startDate = new Date(start)
+    const endDate = end ? new Date(end) : null
+    
+    const experience = await db.featureExperience.create({
+        data: {
+            id: randomUUID(),
+            company,
+            description,
+            position,
+            current,
+            userId,
+            start: startDate,
+            end: endDate,
+        }
+    })
+    return experience
+}
+
+export const allExperience = async (id: string): Promise<FeatureExperience[]> => {
+    const experience = await db.featureExperience.findMany({
+        where: {
+            userId: id
+        }
+    })
+
+    return experience
+}
+
+
+export const deleteExperience = async (id: string): Promise<void> => {
+    await db.featureExperience.delete({
         where: {
             id: id
         }

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express"
 
 import auth from "../../middleware/auth"
-import { allEducation, allHeader, createEducation, createHeader, deleteEducation, deleteHeader } from "./feature.service"
+import { allEducation, allExperience, allHeader, createEducation, createExperience, createHeader, deleteEducation, deleteExperience, deleteHeader } from "./feature.service"
 import { createEducationHeaderValidator, createHeaderValidator } from "./validators"
 
 const featureRoute = Router()
@@ -56,6 +56,8 @@ featureRoute.post('/delete-header', auth, async (Request: Request, Response: Res
     }
 })
 
+
+// ************************Education routes************************************************************************
 /* Creating a route that is being called `/create-education` and it is using the `auth` middleware. It
 is also using the `createEducation` function from the `feature.service` file. */
 featureRoute.post('/create-education', auth, async (Request: Request, Response: Response) => {
@@ -82,7 +84,7 @@ featureRoute.get('/get-all-education', auth, async (Request: Request, Response: 
         if (education.length > 0) {
             return Response.status(200).send(education)
         }
-        else return Response.status(500).send("headers not found")
+        else return Response.status(500).send("educations not found")
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
@@ -98,5 +100,43 @@ featureRoute.post('/delete-education', auth, async (Request: Request, Response: 
         return Response.status(500).send(error.message)
     }
 })
+
+// ***************************Experience routes*****************************************************************
+
+/* Creating a route that is being called `/create-experience` and it is using the `auth`
+middleware. It is also using the `createExperience` function from the `feature.service` file. */
+featureRoute.post('/create-experience', auth, async (Request: Request, Response: Response) => {
+    try {
+        const header = await createExperience(Request.body)
+        return Response.status(200).send(header)
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+/* Creating a route that is being called `/delete-experience` and it is using the `auth`
+middleware. It is also using the `deleteExperience` function from the `feature.service` file. */
+featureRoute.post('/delete-experience', auth, async (Request: Request, Response: Response) => {
+    try {
+        await deleteExperience(Request.body.id)
+        return Response.status(200).send('deleted')
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+featureRoute.get('/get-all-experience', auth, async (Request: Request, Response: Response) => {
+    try {
+        const experience = await allExperience(Request.body.userId)
+        if (experience.length > 0) {
+            return Response.status(200).send(experience)
+        }
+        else return Response.status(500).send("experience not found")
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+// ***************************Skills routes*****************************************************************
 
 export default featureRoute

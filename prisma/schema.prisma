@@ -52,10 +52,10 @@ model ResumeExperience {
   id          String   @unique @default(uuid())
   company     String
   position    String
-  start       String
-  end         String?
+  start       DateTime
+  end         DateTime?
   current     Boolean?
-  description String
+  description String[]
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
@@ -89,10 +89,10 @@ model FeatureExperience {
   id          String   @unique @default(uuid())
   company     String
   position    String
-  start       String
-  end         String?
+  start       DateTime
+  end         DateTime?
   current     Boolean?
-  description String
+  description String[]
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
