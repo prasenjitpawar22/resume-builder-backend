@@ -6,14 +6,104 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
+// // relational postgresql 
+// // Creating a model called User with the following fields:
+// model User {
+//   id                String              @id @default(uuid())
+//   name              String              
+//   email             String              @unique
+//   password          String
+//   ResumeHeader      ResumeHeader[]
+//   ResumeExperience  ResumeExperience[]
+//   ResumeEducation   ResumeEducation[]
+//   FeatureHeader     FeatureHeader[]
+//   FeatureEducation  FeatureEducation[]
+//   FeatureExperience FeatureExperience[]
+// }
+
+// // Creating a model called ResumeHeader  
+// model ResumeHeader {
+//   id       String  @unique @default(uuid())
+//   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId   String
+//   fullname String
+//   contact  String
+//   linkedin String?
+//   github   String?
+//   website  String?
+// }
+
+// // Creating a model called ResumeEducation
+// model ResumeEducation {
+//   id         String    @unique @default(uuid())
+//   university String
+//   location   String
+//   start      DateTime
+//   end        DateTime?
+//   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId     String
+// }
+
+// // Creating a model called ResumeExperience
+// model ResumeExperience {
+//   id          String   @unique @default(uuid())
+//   company     String
+//   position    String
+//   start       DateTime
+//   end         DateTime?
+//   current     Boolean?
+//   description String[]
+//   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId      String
+// }
+
+// // ---------------- features models
+
+// model FeatureHeader {
+//   id       String  @unique @default(uuid())
+//   fullname String
+//   contact  String
+//   linkedin String?
+//   github   String?
+//   website  String?
+//   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId   String
+// }
+
+// // Creating a model called ResumeEducation
+// model FeatureEducation {
+//   id         String    @unique @default(uuid())
+//   university String
+//   location   String
+//   start      DateTime
+//   end        DateTime?
+//   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId     String
+// }
+
+// // Creating a model called ResumeExperience
+// model FeatureExperience {
+//   id          String   @unique @default(uuid())
+//   company     String
+//   position    String
+//   start       DateTime
+//   end         DateTime?
+//   current     Boolean?
+//   description String[]
+//   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId      String
+// }
+
+// mongodb schema
+
 // Creating a model called User with the following fields:
 model User {
-  id                String              @id @default(uuid())
-  name              String              
+  id                String              @id @default(uuid()) @map("_id")
+  name              String
   email             String              @unique
   password          String
   ResumeHeader      ResumeHeader[]
@@ -26,7 +116,7 @@ model User {
 
 // Creating a model called ResumeHeader  
 model ResumeHeader {
-  id       String  @unique @default(uuid())
+  id       String  @id @default(uuid()) @map("_id")
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   fullname String
@@ -38,7 +128,7 @@ model ResumeHeader {
 
 // Creating a model called ResumeEducation
 model ResumeEducation {
-  id         String    @unique @default(uuid())
+  id         String    @id @default(uuid()) @map("_id")
   university String
   location   String
   start      DateTime
@@ -49,21 +139,21 @@ model ResumeEducation {
 
 // Creating a model called ResumeExperience
 model ResumeExperience {
-  id          String   @unique @default(uuid())
+  id          String    @id @default(uuid()) @map("_id")
   company     String
   position    String
   start       DateTime
   end         DateTime?
   current     Boolean?
   description String[]
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
 
 // ---------------- features models
 
 model FeatureHeader {
-  id       String  @unique @default(uuid())
+  id       String  @id @default(uuid()) @map("_id")
   fullname String
   contact  String
   linkedin String?
@@ -75,7 +165,7 @@ model FeatureHeader {
 
 // Creating a model called ResumeEducation
 model FeatureEducation {
-  id         String    @unique @default(uuid())
+  id         String    @id @default(uuid()) @map("_id")
   university String
   location   String
   start      DateTime
@@ -86,13 +176,13 @@ model FeatureEducation {
 
 // Creating a model called ResumeExperience
 model FeatureExperience {
-  id          String   @unique @default(uuid())
+  id          String    @id @default(uuid()) @map("_id")
   company     String
   position    String
   start       DateTime
   end         DateTime?
   current     Boolean?
   description String[]
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
