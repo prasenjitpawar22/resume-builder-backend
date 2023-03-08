@@ -131,7 +131,7 @@ featureRoute.get('/get-all-experience', auth, async (Request: Request, Response:
         if (experience.length > 0) {
             return Response.status(200).send(experience)
         }
-        else return Response.status(500).send("experience not found")
+        else return Response.status(201).send("experience not found")
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
