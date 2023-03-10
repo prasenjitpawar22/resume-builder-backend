@@ -4,14 +4,15 @@ import Joi from 'joi'
 export const createHeaderValidator = (featureHeader: FeatureHeader) => {
     const schema = Joi.object({
         userId: Joi.string().uuid().required().messages({ 'any.required': `is required` }).label('user id'),
-        contact: Joi.string().min(12).required().messages({
+        contact: Joi.string().length(10).pattern(/^[0-9]+$/).required().messages({
+            'string.pattern.base':"invalid mobile number",
             'string.base': `invalid contact`,
             'string.min': `contact should have a minimum length of {#limit}`,
         }),
         fullname: Joi.string().max(20).required().messages({ 'any.required': `is required` }),
-        linkedin: Joi.string().messages({}),
-        github: Joi.string().messages({}),
-        website: Joi.string().messages({}),
+        linkedin: Joi.string().allow(""),
+        github: Joi.string().allow(""),
+        website: Joi.string().allow(""),
     })
     return schema.validate(featureHeader)
 }
