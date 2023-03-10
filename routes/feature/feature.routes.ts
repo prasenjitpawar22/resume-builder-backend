@@ -1,4 +1,6 @@
+import { FeatureHeader } from "@prisma/client"
 import { Router, Request, Response } from "express"
+import _ from "lodash"
 
 import auth from "../../middleware/auth"
 import { allEducation, allExperience, allHeader, createEducation, createExperience, createHeader, deleteEducation, deleteExperience, deleteHeader } from "./feature.service"
@@ -36,10 +38,7 @@ and the error message. */
 featureRoute.get('/get-all-header', auth, async (Request: Request, Response: Response) => {
     try {
         const headers = await allHeader(Request.body.userId)
-        if (headers.length > 0) {
-            return Response.status(200).send(headers)
-        }
-        else return Response.status(500).send("headers not found")
+        return Response.status(200).send(headers)
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
