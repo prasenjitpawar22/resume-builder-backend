@@ -25,7 +25,7 @@ export const getAllHeader = async (id: string): Promise<FeatureHeader[] | null> 
  * @param data - Omit<FeatureHeader, "id">
  * @returns The header is being returned.
  */
-export const createHeader = async (data: Omit<FeatureHeader, "id">): Promise<FeatureHeader> => {
+export const createHeader = async (data: Omit<FeatureHeader, "id">): Promise<Omit<FeatureHeader, "userId">> => {
     const { contact, fullname, github, linkedin, website, userId } = data
     // const userId = user.id
     const header = await db.featureHeader.create({
@@ -37,8 +37,15 @@ export const createHeader = async (data: Omit<FeatureHeader, "id">): Promise<Fea
             linkedin,
             website,
             userId,
+        },
+        select: {
+            id: true,
+            contact: true,
+            fullname: true,
+            github: true,
+            linkedin: true,
+            website: true,
         }
-
     })
     return header
 }
@@ -81,7 +88,7 @@ export const allHeader = async (id: string): Promise<FeatureHeader[]> => {
  *   "end
  * 
  */
-export const createEducation = async (data: Omit<FeatureEducation, "id">): Promise<FeatureEducation> => {
+export const createEducation = async (data: Omit<FeatureEducation, "id">): Promise<Omit<FeatureEducation, "userId">> => {
     const { end, location, start, university, userId } = data
     const startDate = new Date(start)
     const endDate = end ? new Date(end) : null
@@ -94,6 +101,9 @@ export const createEducation = async (data: Omit<FeatureEducation, "id">): Promi
             end: endDate,
             university,
             userId,
+        },
+        select: {
+            end: true, id: true, location: true, start: true, university: true
         }
     })
     return education
@@ -108,7 +118,7 @@ export const allEducation = async (id: string): Promise<FeatureEducation[]> => {
     const educations = await db.featureEducation.findMany({
         where: {
             userId: id
-        }
+        },
     })
 
     return educations
@@ -132,7 +142,7 @@ export const createExperience = async (data: Omit<FeatureExperience, "id">): Pro
     const { end, company, start, current, userId, description, position } = data
     const startDate = new Date(start)
     const endDate = end ? new Date(end) : null
-    
+
     const experience = await db.featureExperience.create({
         data: {
             id: randomUUID(),

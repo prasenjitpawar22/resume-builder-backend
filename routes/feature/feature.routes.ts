@@ -80,10 +80,7 @@ middleware. It is also using the `allEducation` function from the `feature.servi
 featureRoute.get('/get-all-education', auth, async (Request: Request, Response: Response) => {
     try {
         const education = await allEducation(Request.body.userId)
-        if (education.length > 0) {
-            return Response.status(200).send(education)
-        }
-        else return Response.status(500).send("educations not found")
+        return Response.status(200).send(education)
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
