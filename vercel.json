@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "buildCommand": "rimraf ./build && tsc && npm run build",
     "builds": [
         {
             "src": "index.ts",
