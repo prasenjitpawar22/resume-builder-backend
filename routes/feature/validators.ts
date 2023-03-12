@@ -1,11 +1,11 @@
-import { FeatureEducation, FeatureHeader } from '@prisma/client'
+import { FeatureEducation, FeatureHeader, FeatureExperience } from '@prisma/client'
 import Joi from 'joi'
 
 export const createHeaderValidator = (featureHeader: FeatureHeader) => {
     const schema = Joi.object({
         userId: Joi.string().uuid().required().messages({ 'any.required': `is required` }).label('user id'),
         contact: Joi.string().length(10).pattern(/^[0-9]+$/).required().messages({
-            'string.pattern.base':"invalid mobile number",
+            'string.pattern.base': "invalid mobile number",
             'string.base': `invalid contact`,
             'string.min': `contact should have a minimum length of {#limit}`,
         }),
@@ -28,3 +28,15 @@ export const createEducationHeaderValidator = (featureEducation: FeatureEducatio
     return schema.validate(featureEducation)
 }
 
+export const createEducationExperienceValidator = (featureExperience: FeatureExperience) => {
+    const schema = Joi.object<FeatureExperience>({
+        company: Joi.string().required().messages({}),
+        current: Joi.boolean().required().messages({ 'any.required': 'current is required' }),
+        description: Joi.array().allow().messages({ 'string.base': 'invalid description' }),
+        end: Joi.string().allow("").messages({ 'string.base': 'invalid end date' }),
+        position: Joi.string().required().messages({}),
+        start: Joi.string().required(),
+        userId: Joi.string().uuid().required().messages({ 'any.required': `is required` }).label('user id'),
+    })
+    return schema.validate(featureExperience)
+}

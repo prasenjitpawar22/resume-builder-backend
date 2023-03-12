@@ -1,10 +1,10 @@
 import { FeatureHeader } from "@prisma/client"
-import { Router, Request, Response } from "express"
+import { Router, Request, Response, response } from "express"
 import _ from "lodash"
 
 import auth from "../../middleware/auth"
 import { allEducation, allExperience, allHeader, createEducation, createExperience, createHeader, deleteEducation, deleteExperience, deleteHeader } from "./feature.service"
-import { createEducationHeaderValidator, createHeaderValidator } from "./validators"
+import { createEducationExperienceValidator, createEducationHeaderValidator, createHeaderValidator } from "./validators"
 
 const featureRoute = Router()
 
@@ -102,8 +102,16 @@ featureRoute.post('/delete-education', auth, async (Request: Request, Response: 
 /* Creating a route that is being called `/create-experience` and it is using the `auth`
 middleware. It is also using the `createExperience` function from the `feature.service` file. */
 featureRoute.post('/create-experience', auth, async (Request: Request, Response: Response) => {
+    const { error } = createEducationExperienceValidator(Request.body)
+
+    if (error) {
+        // console.log(error);
+        return Response.status(400).json({ error: error.details[0].message })
+    }
+
     try {
         const header = await createExperience(Request.body)
+        console.log(header);
         return Response.status(200).send(header)
     } catch (error: any) {
         return Response.status(500).send(error.message)
@@ -122,6 +130,7 @@ featureRoute.post('/delete-experience', auth, async (Request: Request, Response:
 })
 
 featureRoute.get('/get-all-experience', auth, async (Request: Request, Response: Response) => {
+    
     try {
         const experience = await allExperience(Request.body.userId)
         if (experience.length > 0) {
