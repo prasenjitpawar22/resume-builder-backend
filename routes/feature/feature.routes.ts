@@ -38,7 +38,8 @@ and the error message. */
 featureRoute.get('/get-all-header', auth, async (Request: Request, Response: Response) => {
     try {
         const headers = await allHeader(Request.body.userId)
-        return Response.status(200).send(headers)
+        // return Response.status(200).send(headers)
+        return Response.status(400)
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
