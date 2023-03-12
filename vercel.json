@@ -1,20 +1,17 @@
 {
     "version": 2,
+    "buildCommand": "rimraf ./build && tsc && npm run build",
     "builds": [
         {
-            "src": "build/index.js",
-            "use": "@vercel/node",
-            "config": {
-                "includeFiles": [
-                    "build/**"
-                ]
-            }
+            "src": "index.ts",
+            "use": "@vercel/node" 
+            
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "build/index.js"
+            "dest": "index.js"
         }
     ]
 }
