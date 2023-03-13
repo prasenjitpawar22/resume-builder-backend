@@ -2,32 +2,39 @@ import { Request, Response, Express, Router } from "express";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 
 
 import { createUser, getAllUsers, getUserByEmail, getUserById, removeAllUsers } from './user.service'
 import auth from "../../middleware/auth";
-import { LoginRequestValidator } from "./validator";
+import { LoginRequestValidator, RegisterRequestValidator } from "./validator";
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from "@prisma/client/runtime";
 const userRoute = Router();
 
 
 userRoute.post('/register', async (req: Request, res: Response) => {
+  const { error } = RegisterRequestValidator(req.body)
+  if (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.details[0].message })
+  }
+
   try {
     let user = await getUserByEmail(req.body.email)
 
     if (user) {
-      return res.status(400).send('That user already exisits!');
+      return res.status(400).json({ message: 'That user already exisits!' });
     } else {
-      const user = req.body
-      const newUser = await createUser(user)
+      const {email, fullname, password} = req.body
+      const newUser = await createUser(email, fullname, password)
       const token = jwt.sign({ id: newUser.id }, process.env.PRIVATE_KEY!, {
         expiresIn: '20min'
       });
 
-      return res.send({ token, newUser });
+      return res.status(200).json({ token, email: newUser.email, name: newUser.name });
     }
   } catch (error: any) {
-    return res.status(501).send(error.message)
+    return res.status(501).json({ message: 'server error' })
   }
 });
 
@@ -43,18 +50,18 @@ userRoute.post('/login', async (req: Request, res: Response) => {
   const { error } = LoginRequestValidator(req.body)
 
   if (error) {
-    return res.status(400).json({ error: error.details[0].message })
+    return res.status(400).json({ message: error.details[0].message })
   }
 
   let user = await getUserByEmail(req.body.email);
 
   if (!user) {
-    return res.status(400).json({ error: 'User not found' });
+    return res.status(400).json({ message: 'User not found' });
   }
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) {
-    return res.status(400).json({ error: 'Invalid password' });
+    return res.status(400).json({ message: 'Invalid password' });
   }
   const token = jwt.sign({ id: user.id }, process.env.PRIVATE_KEY!, {
     expiresIn: '20min'
