@@ -12,8 +12,8 @@ export const getAllHeader = async (id: string): Promise<ResumeHeader[] | null> =
     return headers
 }
 
-export const createHeader = async (data: Omit<ResumeHeader, "id">): Promise<ResumeHeader> => {
-    const { contact, fullname, github, linkedin, website, userId } = data
+export const createHeader = async (data: ResumeHeader): Promise<ResumeHeader> => {
+    const { contact, fullname, github, linkedin, website, userId, featureHeaderId } = data
     // const userId = user.id
     const header = await db.resumeHeader.create({
         data: {
@@ -23,7 +23,8 @@ export const createHeader = async (data: Omit<ResumeHeader, "id">): Promise<Resu
             github,
             linkedin,
             website,
-            userId
+            userId,
+            featureHeaderId,
         }
 
     })

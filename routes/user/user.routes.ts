@@ -25,10 +25,10 @@ userRoute.post('/register', async (req: Request, res: Response) => {
     if (user) {
       return res.status(400).json({ message: 'That user already exisits!' });
     } else {
-      const {email, fullname, password} = req.body
+      const { email, fullname, password } = req.body
       const newUser = await createUser(email, fullname, password)
       const token = jwt.sign({ id: newUser.id }, process.env.PRIVATE_KEY!, {
-        expiresIn: '20min'
+        expiresIn: '5h'
       });
 
       return res.status(200).json({ token, email: newUser.email, name: newUser.name });
@@ -64,7 +64,7 @@ userRoute.post('/login', async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid password' });
   }
   const token = jwt.sign({ id: user.id }, process.env.PRIVATE_KEY!, {
-    expiresIn: '20min'
+    expiresIn: '5h'
   });
 
   const { email, name } = _.pick(user, 'name', 'email')

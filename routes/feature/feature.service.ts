@@ -25,7 +25,8 @@ export const getAllHeader = async (id: string): Promise<FeatureHeader[] | null> 
  * @param data - Omit<FeatureHeader, "id">
  * @returns The header is being returned.
  */
-export const createHeader = async (data: Omit<FeatureHeader, "id">): Promise<Omit<FeatureHeader, "userId">> => {
+export const createHeader = async (data: Omit<FeatureHeader, "id">):
+    Promise<Omit<FeatureHeader, "userId" | "resumeHeaderId">> => {
     const { contact, fullname, github, linkedin, website, userId } = data
     // const userId = user.id
     const header = await db.featureHeader.create({

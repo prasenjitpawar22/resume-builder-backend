@@ -116,14 +116,16 @@ model User {
 
 // Creating a model called ResumeHeader  
 model ResumeHeader {
-  id       String  @id @default(uuid()) @map("_id")
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  fullname String
-  contact  String
-  linkedin String?
-  github   String?
-  website  String?
+  id              String         @id @default(uuid()) @map("_id")
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  fullname        String
+  contact         String
+  linkedin        String?
+  github          String?
+  website         String?
+  headerId        FeatureHeader? @relation(fields: [featureHeaderId], references: [id])
+  featureHeaderId String?        @unique
 }
 
 // Creating a model called ResumeEducation
@@ -153,14 +155,16 @@ model ResumeExperience {
 // ---------------- features models
 
 model FeatureHeader {
-  id       String  @id @default(uuid()) @map("_id")
-  fullname String
-  contact  String
-  linkedin String?
-  github   String?
-  website  String?
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
+  id             String         @id @default(uuid()) @map("_id")
+  fullname       String
+  contact        String
+  linkedin       String?
+  github         String?
+  website        String?
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeHeaderId String?        @unique
+  userId         String
+  ResumeHeader   ResumeHeader[]
 }
 
 // Creating a model called ResumeEducation

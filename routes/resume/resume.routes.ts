@@ -9,8 +9,9 @@ const resumeRoutes = Router()
 
 /* Creating a route that is being called `/create-header` and it is using the `auth` middleware. It is
 also using the `createHeader` function from the `resume.service` file. */
-resumeRoutes.post('/create-header', auth, async (Request: Request, Response: Response) => {
+resumeRoutes.post('/add-header', auth, async (Request: Request, Response: Response) => {
     //after validation
+
     try {
         const header = await createHeader(Request.body)
         return Response.status(200).send(header)
@@ -36,7 +37,7 @@ also using the `allHeader` function from the `resume.service` file. */
 resumeRoutes.get('/get-all-header', auth, async (Request: Request, Response: Response) => {
     //after validation
     try {
-        const headers =  await allHeader(Request.body.userId)
+        const headers = await allHeader(Request.body.userId)
         return Response.status(200).send(headers)
     } catch (error: any) {
         return Response.status(500).send(error.message)
