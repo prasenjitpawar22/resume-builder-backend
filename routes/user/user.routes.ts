@@ -15,7 +15,6 @@ const userRoute = Router();
 userRoute.post('/register', async (req: Request, res: Response) => {
   const { error } = RegisterRequestValidator(req.body)
   if (error) {
-    console.log(error);
     return res.status(400).json({ message: error.details[0].message })
   }
 
@@ -25,8 +24,7 @@ userRoute.post('/register', async (req: Request, res: Response) => {
     if (user) {
       return res.status(400).json({ message: 'That user already exisits!' });
     } else {
-      const { email, fullname, password } = req.body
-      const newUser = await createUser(email, fullname, password)
+      const newUser = await createUser(req.body)
       const token = jwt.sign({ id: newUser.id }, process.env.PRIVATE_KEY!, {
         expiresIn: '5h'
       });

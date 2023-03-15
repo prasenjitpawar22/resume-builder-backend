@@ -5,16 +5,21 @@ import { User } from "@prisma/client"
 import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientValidationError } from "@prisma/client/runtime"
 
 /* createUser that takes in a user object and returns a promise of a user object. */
-export const createUser = async (email: string, password: string, fullname: string): Promise<Omit<User, "password">> => {
+type TRegisterUserData = {
+    email: string
+    password: string
+    fullname: string
+}
+export const createUser = async (data: TRegisterUserData): Promise<Omit<User, "password">> => {
 
     try {
         const salt = await bcrypt.genSalt(10);
-        const hashPassword = await bcrypt.hash(password, salt);
+        const hashPassword = await bcrypt.hash(data.password, salt);
         return db.user.create({
             data: {
                 id: randomUUID(),
-                email,
-                name: fullname,
+                email: data.email,
+                name: data.fullname,
                 password: hashPassword,
             },
             select: {
