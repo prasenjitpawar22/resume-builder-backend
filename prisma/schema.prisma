@@ -124,7 +124,7 @@ model ResumeHeader {
   linkedin        String?
   github          String?
   website         String?
-  headerId        FeatureHeader? @relation(fields: [featureHeaderId], references: [id], onDelete: Cascade)
+  featureheader   FeatureHeader? @relation(fields: [featureHeaderId], references: [id], onDelete: Cascade)
   featureHeaderId String?        @unique
   // title           Str 
 }
@@ -136,7 +136,7 @@ model ResumeEducation {
   location           String
   start              DateTime
   end                DateTime?
-  header             FeatureEducation? @relation(fields: [featureEducationId], references: [id], onDelete: Cascade)
+  featureEducation   FeatureEducation? @relation(fields: [featureEducationId], references: [id], onDelete: Cascade)
   featureEducationId String?           @unique
   user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             String
@@ -150,7 +150,7 @@ model ResumeExperience {
   start               DateTime
   end                 DateTime?
   current             Boolean?
-  header              FeatureExperience? @relation(fields: [featureExperienceId], references: [id], onDelete: Cascade)
+  featureExperience   FeatureExperience? @relation(fields: [featureExperienceId], references: [id], onDelete: Cascade)
   featureExperienceId String?            @unique
   description         String[]
   user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)

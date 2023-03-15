@@ -3,7 +3,7 @@ import { ResumeHeader } from "@prisma/client";
 import { Router, Response, Request } from "express";
 import _ from "lodash";
 import auth from "../../middleware/auth";
-import { allHeader, createExperience, createHeader, deleteExperience, deleteHeader, getAllExperience } from "./resume.service";
+import { allHeader, createEducation, createExperience, createHeader, deleteEducation, deleteExperience, deleteHeader, getAllEducation, getAllExperience } from "./resume.service";
 
 const resumeRoutes = Router()
 
@@ -73,6 +73,40 @@ resumeRoutes.post('/delete-experience', auth, async (Request: Request, Response:
     try {
         await deleteExperience(Request.body.id)
         return Response.status(200).send('deleted')
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+
+//***********************************Education**************************************************** */
+
+resumeRoutes.get('/get-all-education', auth, async (Request: Request, Response: Response) => {
+    //after validation
+    try {
+        const education = await getAllEducation(Request.body.userId)
+        return Response.status(200).send(education)
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+resumeRoutes.post('/delete-education', auth, async (Request: Request, Response: Response) => {
+    //after validation
+    try {
+        await deleteEducation(Request.body.id)
+        return Response.status(200).send('deleted')
+    } catch (error: any) {
+        return Response.status(500).send(error.message)
+    }
+})
+
+resumeRoutes.post('/add-education', auth, async (Request: Request, Response: Response) => {
+    //after validation
+
+    try {
+        const education = await createEducation(Request.body)
+        return Response.status(200).send(education)
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }

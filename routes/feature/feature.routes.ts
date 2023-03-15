@@ -110,9 +110,8 @@ featureRoute.post('/create-experience', auth, async (Request: Request, Response:
     }
 
     try {
-        const header = await createExperience(Request.body)
-        console.log(header);
-        return Response.status(200).send(header)
+        const experience = await createExperience(Request.body)
+        return Response.status(200).send(experience)
     } catch (error: any) {
         return Response.status(500).send(error.message)
     }
@@ -130,7 +129,7 @@ featureRoute.post('/delete-experience', auth, async (Request: Request, Response:
 })
 
 featureRoute.get('/get-all-experience', auth, async (Request: Request, Response: Response) => {
-    
+
     try {
         const experience = await allExperience(Request.body.userId)
         if (experience.length > 0) {
