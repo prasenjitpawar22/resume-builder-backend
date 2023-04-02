@@ -6,6 +6,7 @@ import cors from 'cors';
 import userRoute from "./routes/user/user.routes"
 import resumeRoutes from "./routes/resume/resume.routes"
 import featureRoutes from "./routes/feature/feature.routes"
+import formRoutes from './routes/Forms/formsRoute';
 
 config()
 
@@ -18,6 +19,7 @@ const port = process.env.PORT
 app.use('/feature', featureRoutes)
 app.use('/user', userRoute)
 app.use('/resume', resumeRoutes)
+app.use('/build', formRoutes)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

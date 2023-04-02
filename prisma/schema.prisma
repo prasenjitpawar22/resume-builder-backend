@@ -112,6 +112,12 @@ model User {
   FeatureHeader     FeatureHeader[]
   FeatureEducation  FeatureEducation[]
   FeatureExperience FeatureExperience[]
+  summary           Summary[]
+  Experience        Experience[]
+  Skills            Skills[]
+  Certification     Certification[]
+  Education         Education[]
+  Contact           Contact[]
 }
 
 // Creating a model called ResumeHeader  
@@ -195,4 +201,74 @@ model FeatureExperience {
   user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String
   ResumeExperience ResumeExperience[]
+}
+
+// new schema ***hopefully*** final 
+model Summary {
+  id      String  @id @default(uuid()) @map("_id")
+  summary String
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
+  show    Boolean @default(true)
+}
+
+model Experience {
+  id          String   @id @default(uuid()) @map("_id")
+  role        String
+  company     String
+  startYear   DateTime
+  endYear     DateTime
+  present     Boolean
+  location    String
+  achivements String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  show        Boolean  @default(true)
+}
+
+model Certification {
+  id       String   @id @default(uuid()) @map("_id")
+  name     String
+  location String
+  year     DateTime
+  helpful  String
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  show     Boolean  @default(true)
+}
+
+model Skills {
+  id     String  @id @default(uuid()) @map("_id")
+  skill  String
+  user   User    @relation(fields: [userId], references: [id])
+  userId String
+  show   Boolean @default(true)
+}
+
+model Education {
+  id         String   @id @default(uuid()) @map("_id")
+  degree     String
+  location   String
+  university String
+  year       DateTime
+  minor      String?
+  gpa        String?
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  show       Boolean  @default(true)
+}
+
+model Contact {
+  id       String  @id @default(uuid()) @map("_id")
+  fullname String
+  phone    String
+  website  String
+  state    String
+  email    String
+  linkedin String
+  country  String
+  city     String
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  show     Boolean @default(true)
 }
