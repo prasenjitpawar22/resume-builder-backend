@@ -55,5 +55,201 @@ formRoutes.post('/update-summary', auth, async (req: Request, res: Response) => 
     }
 })
 
+//*******************************skills************************ */
+formRoutes.post('/add-skill', auth, async (req: Request, res: Response) => {
+    try {
+        const skill = await db.skills.create({
+            data: {
+                id: randomUUID(),
+                skill: req.body.skill,
+                userId: req.body.userId
+            }
+        })
+        return res.send(skill)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/update-skill', auth, async (req: Request, res: Response) => {
+    try {
+        const skill = await db.skills.update({
+            data: {
+                skill: req.body.skill,
+                userId: req.body.userId
+            },
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('updated')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/remove-skill', auth, async (req: Request, res: Response) => {
+    try {
+        await db.skills.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('removed')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.get('/get-all-skills', auth, async (req: Request, res: Response) => {
+    try {
+        const skills = await db.skills.findMany({
+            where: {
+                userId: req.body.userId,
+            }
+        })
+        return res.send(skills)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+//*******************************experience************************ */
+formRoutes.post('/add-experience', auth, async (req: Request, res: Response) => {
+    try {
+        await db.experience.create({
+            data: {
+                id: randomUUID(),
+                userId: req.body.userId,
+                achivements: req.body.achivements,
+                company: req.body.company,
+                endYear: req.body.endYear,
+                location: req.body.location,
+                present: req.body.present,
+                role: req.body.role,
+                startYear: req.body.startYear,
+            }
+        })
+        return res.send('created')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/update-experience', auth, async (req: Request, res: Response) => {
+    try {
+        const skill = await db.experience.update({
+            data: {
+                achivements: req.body.achivements,
+                company: req.body.company,
+                endYear: req.body.endYear,
+                location: req.body.location,
+                present: req.body.present,
+                role: req.body.role,
+                startYear: req.body.startYear,
+            },
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('updated')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/remove-experience', auth, async (req: Request, res: Response) => {
+    try {
+        await db.experience.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('removed')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.get('/get-all-experience', auth, async (req: Request, res: Response) => {
+    try {
+        const experiences = await db.experience.findMany({
+            where: {
+                userId: req.body.userId,
+            }
+        })
+        return res.send(experiences)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+//*******************************education************************ */
+formRoutes.post('/add-education', auth, async (req: Request, res: Response) => {
+    try {
+        await db.education.create({
+            data: {
+                id: randomUUID(),
+                userId: req.body.userId,
+                location: req.body.location,
+                degree: req.body.degree,
+                university: req.body.university,
+                year: req.body.year,
+                gpa: req.body.gpa,
+                minor: req.body.minor,
+            }
+        })
+        return res.send('created')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/update-education', auth, async (req: Request, res: Response) => {
+    try {
+        const skill = await db.education.update({
+            data: {
+                location: req.body.location,
+                degree: req.body.degree,
+                university: req.body.university,
+                year: req.body.year,
+                gpa: req.body.gpa,
+                minor: req.body.minor,
+            },
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('updated')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/remove-education', auth, async (req: Request, res: Response) => {
+    try {
+        await db.education.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('removed')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.get('/get-all-education', auth, async (req: Request, res: Response) => {
+    try {
+        const educations = await db.education.findMany({
+            where: {
+                userId: req.body.userId,
+            }
+        })
+        return res.send(educations)
+    } catch (error) {
+        return res.send(error)
+    }
+})
 
 export default formRoutes
