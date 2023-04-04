@@ -260,14 +260,14 @@ model Education {
 
 model Contact {
   id       String  @id @default(uuid()) @map("_id")
-  fullname String
-  phone    String
-  website  String
-  state    String
-  email    String
-  linkedin String
-  country  String
-  city     String
+  fullname String?
+  phone    String?
+  website  String?
+  state    String?
+  email    String?
+  linkedin String?
+  country  String?
+  city     String?
   user     User    @relation(fields: [userId], references: [id])
   userId   String
   show     Boolean @default(true)

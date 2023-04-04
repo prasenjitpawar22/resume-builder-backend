@@ -252,4 +252,87 @@ formRoutes.get('/get-all-educations', auth, async (req: Request, res: Response) 
     }
 })
 
+
+
+//*******************************contact************************ */
+formRoutes.post('/add-contact', auth, async (req: Request, res: Response) => {
+    try {
+        await db.contact.create({
+            data: {
+                id: randomUUID(),
+                userId: req.body.userId,
+                city: req.body.city,
+                country: req.body.country,
+                email: req.body.email,
+                fullname: req.body.fullname,
+                linkedin: req.body.linkedin,
+                phone: req.body.phone,
+                state: req.body.state,
+                website: req.body.website,
+            }
+        })
+            .then((contact) => {
+                return res.send(contact)
+            })
+            .catch((err) => {
+                console.log(err);
+
+                res.send(err)
+            })
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/update-contact', auth, async (req: Request, res: Response) => {
+    try {
+        const contact = await db.contact.update({
+            data: {
+                userId: req.body.userId,
+                city: req.body.city,
+                country: req.body.country,
+                email: req.body.email,
+                fullname: req.body.fullname,
+                linkedin: req.body.linkedin,
+                phone: req.body.phone,
+                state: req.body.state,
+                website: req.body.website,
+                show: req.body.show
+            },
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send(contact)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/remove-contact', auth, async (req: Request, res: Response) => {
+    try {
+        await db.contact.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('removed')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.get('/get-all-contacts', auth, async (req: Request, res: Response) => {
+    try {
+        const contacts = await db.contact.findMany({
+            where: {
+                userId: req.body.userId,
+            }
+        })
+        return res.send(contacts)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
 export default formRoutes
