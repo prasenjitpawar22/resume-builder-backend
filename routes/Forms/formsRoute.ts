@@ -171,7 +171,7 @@ formRoutes.post('/remove-experience', auth, async (req: Request, res: Response) 
     }
 })
 
-formRoutes.get('/get-all-experience', auth, async (req: Request, res: Response) => {
+formRoutes.get('/get-all-experiences', auth, async (req: Request, res: Response) => {
     try {
         const experiences = await db.experience.findMany({
             where: {
@@ -187,7 +187,7 @@ formRoutes.get('/get-all-experience', auth, async (req: Request, res: Response) 
 //*******************************education************************ */
 formRoutes.post('/add-education', auth, async (req: Request, res: Response) => {
     try {
-        await db.education.create({
+        const education = await db.education.create({
             data: {
                 id: randomUUID(),
                 userId: req.body.userId,
@@ -199,7 +199,7 @@ formRoutes.post('/add-education', auth, async (req: Request, res: Response) => {
                 minor: req.body.minor,
             }
         })
-        return res.send('created')
+        return res.send(education)
     } catch (error) {
         return res.send(error)
     }
@@ -207,7 +207,7 @@ formRoutes.post('/add-education', auth, async (req: Request, res: Response) => {
 
 formRoutes.post('/update-education', auth, async (req: Request, res: Response) => {
     try {
-        const skill = await db.education.update({
+        const education = await db.education.update({
             data: {
                 location: req.body.location,
                 degree: req.body.degree,
@@ -220,7 +220,7 @@ formRoutes.post('/update-education', auth, async (req: Request, res: Response) =
                 id: req.body.id
             }
         })
-        return res.send('updated')
+        return res.send(education)
     } catch (error) {
         return res.send(error)
     }
@@ -239,7 +239,7 @@ formRoutes.post('/remove-education', auth, async (req: Request, res: Response) =
     }
 })
 
-formRoutes.get('/get-all-education', auth, async (req: Request, res: Response) => {
+formRoutes.get('/get-all-educations', auth, async (req: Request, res: Response) => {
     try {
         const educations = await db.education.findMany({
             where: {
