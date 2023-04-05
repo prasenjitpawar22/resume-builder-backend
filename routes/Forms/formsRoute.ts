@@ -347,7 +347,6 @@ formRoutes.post('/add-certification', auth, async (req: Request, res: Response) 
                 location: req.body.location,
                 name: req.body.name,
                 year: req.body.year,
-                user: req.body.user,
             }
         })
             .then((certification) => {
@@ -373,7 +372,6 @@ formRoutes.post('/update-certification', auth, async (req: Request, res: Respons
                 location: req.body.location,
                 name: req.body.name,
                 year: req.body.year,
-                user: req.body.user,
             },
             where: {
                 id: req.body.id
