@@ -17,7 +17,10 @@ formRoutes.post('/add-summary', auth, async (req: Request, res: Response) => {
                 userId: req.body.userId,
             }
         })
-        return res.send('added')
+            .then((summary) => { return res.send(summary) })
+            .catch((error) => {
+                return res.send(error)
+            })
     } catch (error) {
         return res.send(error)
     }
