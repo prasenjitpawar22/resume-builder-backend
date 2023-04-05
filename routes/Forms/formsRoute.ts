@@ -335,4 +335,80 @@ formRoutes.get('/get-all-contacts', auth, async (req: Request, res: Response) =>
     }
 })
 
+
+//*******************************certification************************ */
+formRoutes.post('/add-certification', auth, async (req: Request, res: Response) => {
+    try {
+        await db.certification.create({
+            data: {
+                id: randomUUID(),
+                userId: req.body.userId,
+                helpful: req.body.helpful,
+                location: req.body.location,
+                name: req.body.name,
+                year: req.body.year,
+                user: req.body.user,
+            }
+        })
+            .then((certification) => {
+                return res.send(certification)
+            })
+            .catch((err) => {
+                console.log(err);
+
+                res.send(err)
+            })
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/update-certification', auth, async (req: Request, res: Response) => {
+    try {
+        const certification = await db.certification.update({
+            data: {
+                show: req.body.show,
+                userId: req.body.userId,
+                helpful: req.body.helpful,
+                location: req.body.location,
+                name: req.body.name,
+                year: req.body.year,
+                user: req.body.user,
+            },
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send(certification)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.post('/remove-certification', auth, async (req: Request, res: Response) => {
+    try {
+        await db.certification.delete({
+            where: {
+                id: req.body.id
+            }
+        })
+        return res.send('removed')
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
+formRoutes.get('/get-all-certifications', auth, async (req: Request, res: Response) => {
+    try {
+        const certifications = await db.certification.findMany({
+            where: {
+                userId: req.body.userId,
+            }
+        })
+        return res.send(certifications)
+    } catch (error) {
+        return res.send(error)
+    }
+})
+
 export default formRoutes
