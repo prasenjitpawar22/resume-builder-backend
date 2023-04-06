@@ -8,7 +8,6 @@
     "dev": "npx nodemon",
     "build": "rimraf ./build && tsc && npm run build",
     "start": "node build/index.js"
-
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
   "homepage": "https://github.com/prasenjitpawar22/resume-builder-backend#readme",
   "dependencies": {
     "@prisma/client": "^4.11.0",
+    "axios": "^1.3.5",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

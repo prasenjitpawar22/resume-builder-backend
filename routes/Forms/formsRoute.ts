@@ -105,14 +105,22 @@ formRoutes.post('/remove-skill', auth, async (req: Request, res: Response) => {
 })
 
 formRoutes.get('/get-all-skills', auth, async (req: Request, res: Response) => {
+    // console.log(req.body.userId);
+
     try {
+        if (!req.body.userId) return res.status(404).send('user not found')
+
         const skills = await db.skills.findMany({
             where: {
-                userId: req.body.userId,
+                userId: req.body.userId
             }
-        })
+        }).catch((err => {
+            return res.send(err)
+        }))
         return res.send(skills)
     } catch (error) {
+        console.log(error);
+
         return res.send(error)
     }
 })
@@ -176,11 +184,16 @@ formRoutes.post('/remove-experience', auth, async (req: Request, res: Response) 
 
 formRoutes.get('/get-all-experiences', auth, async (req: Request, res: Response) => {
     try {
+
+        if (!req.body.userId) return res.status(404).send('user not found')
+
         const experiences = await db.experience.findMany({
             where: {
-                userId: req.body.userId,
+                userId: req.body.userId
             }
-        })
+        }).catch((err => {
+            return res.send(err)
+        }))
         return res.send(experiences)
     } catch (error) {
         return res.send(error)
@@ -231,12 +244,17 @@ formRoutes.post('/update-education', auth, async (req: Request, res: Response) =
 
 formRoutes.post('/remove-education', auth, async (req: Request, res: Response) => {
     try {
-        await db.education.delete({
+
+        if (!req.body.userId) return res.status(404).send('user not found')
+
+        const education = await db.education.findMany({
             where: {
-                id: req.body.id
+                userId: req.body.userId
             }
-        })
-        return res.send('removed')
+        }).catch((err => {
+            return res.send(err)
+        }))
+        return res.send(education)
     } catch (error) {
         return res.send(error)
     }
@@ -327,11 +345,15 @@ formRoutes.post('/remove-contact', auth, async (req: Request, res: Response) => 
 
 formRoutes.get('/get-all-contacts', auth, async (req: Request, res: Response) => {
     try {
+
+        if (!req.body.userId) return res.status(404).send('user not found')
+
         const contacts = await db.contact.findMany({
             where: {
-                userId: req.body.userId,
+                userId: req.body.userId
             }
-        })
+        }).catch((err) => res.send(err))
+
         return res.send(contacts)
     } catch (error) {
         return res.send(error)
@@ -401,9 +423,12 @@ formRoutes.post('/remove-certification', auth, async (req: Request, res: Respons
 
 formRoutes.get('/get-all-certifications', auth, async (req: Request, res: Response) => {
     try {
+
+        if (!req.body.userId) return res.status(404).send('user not found')
+
         const certifications = await db.certification.findMany({
             where: {
-                userId: req.body.userId,
+                userId: req.body.userId
             }
         })
         return res.send(certifications)

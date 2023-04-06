@@ -16,9 +16,9 @@ app.use(cors())
 const port = process.env.PORT
 
 // app.use('/resume', resumeRoute)
-app.use('/feature', featureRoutes)
-app.use('/user', userRoute)
-app.use('/resume', resumeRoutes)
+// app.use('/feature', featureRoutes)
+// app.use('/user', userRoute)
+// app.use('/resume', resumeRoutes)
 app.use('/build', formRoutes)
 
 app.listen(port, () => {

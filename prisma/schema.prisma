@@ -101,113 +101,10 @@ datasource db {
 // mongodb schema
 
 // Creating a model called User with the following fields:
-model User {
-  id                String              @id @default(uuid()) @map("_id")
-  name              String
-  email             String              @unique
-  password          String
-  ResumeHeader      ResumeHeader[]
-  ResumeExperience  ResumeExperience[]
-  ResumeEducation   ResumeEducation[]
-  FeatureHeader     FeatureHeader[]
-  FeatureEducation  FeatureEducation[]
-  FeatureExperience FeatureExperience[]
-  summary           Summary[]
-  Experience        Experience[]
-  Skills            Skills[]
-  Certification     Certification[]
-  Education         Education[]
-  Contact           Contact[]
-}
-
-// Creating a model called ResumeHeader  
-model ResumeHeader {
-  id              String         @id @default(uuid()) @map("_id")
-  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String
-  fullname        String
-  contact         String
-  linkedin        String?
-  github          String?
-  website         String?
-  featureheader   FeatureHeader? @relation(fields: [featureHeaderId], references: [id], onDelete: Cascade)
-  featureHeaderId String?        @unique
-  // title           Str 
-}
-
-// Creating a model called ResumeEducation
-model ResumeEducation {
-  id                 String            @id @default(uuid()) @map("_id")
-  university         String
-  location           String
-  start              DateTime
-  end                DateTime?
-  featureEducation   FeatureEducation? @relation(fields: [featureEducationId], references: [id], onDelete: Cascade)
-  featureEducationId String?           @unique
-  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String
-}
-
-// Creating a model called ResumeExperience
-model ResumeExperience {
-  id                  String             @id @default(uuid()) @map("_id")
-  company             String
-  position            String
-  start               DateTime
-  end                 DateTime?
-  current             Boolean?
-  featureExperience   FeatureExperience? @relation(fields: [featureExperienceId], references: [id], onDelete: Cascade)
-  featureExperienceId String?            @unique
-  description         String[]
-  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String
-}
-
-// ---------------- features models--------------- --------------- --------------- --------------- 
-
-model FeatureHeader {
-  id           String         @id @default(uuid()) @map("_id")
-  fullname     String
-  contact      String
-  linkedin     String?
-  github       String?
-  website      String?
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  ResumeHeader ResumeHeader[]
-}
-
-// Creating a model called ResumeEducation
-model FeatureEducation {
-  id              String            @id @default(uuid()) @map("_id")
-  university      String
-  location        String
-  start           DateTime
-  end             DateTime?
-  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String
-  ResumeEducation ResumeEducation[]
-}
-
-// Creating a model called ResumeExperience
-model FeatureExperience {
-  id               String             @id @default(uuid()) @map("_id")
-  company          String
-  position         String
-  start            DateTime
-  end              DateTime?
-  current          Boolean?
-  description      String[]
-  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String
-  ResumeExperience ResumeExperience[]
-}
-
 // new schema ***hopefully*** final 
 model Summary {
   id      String  @id @default(uuid()) @map("_id")
   summary String
-  user    User    @relation(fields: [userId], references: [id])
   userId  String
   show    Boolean @default(true)
 }
@@ -221,7 +118,6 @@ model Experience {
   present     Boolean?
   location    String?
   achivements String?
-  user        User      @relation(fields: [userId], references: [id])
   userId      String
   show        Boolean   @default(true)
 }
@@ -232,7 +128,6 @@ model Certification {
   location String?
   year     DateTime?
   helpful  String?
-  user     User      @relation(fields: [userId], references: [id])
   userId   String
   show     Boolean   @default(true)
 }
@@ -240,7 +135,6 @@ model Certification {
 model Skills {
   id     String  @id @default(uuid()) @map("_id")
   skill  String
-  user   User    @relation(fields: [userId], references: [id])
   userId String
   show   Boolean @default(true)
 }
@@ -253,7 +147,6 @@ model Education {
   year       DateTime?
   minor      String?
   gpa        String?
-  user       User      @relation(fields: [userId], references: [id])
   userId     String
   show       Boolean   @default(true)
 }
@@ -268,7 +161,6 @@ model Contact {
   linkedin String?
   country  String?
   city     String?
-  user     User    @relation(fields: [userId], references: [id])
   userId   String
   show     Boolean @default(true)
 }

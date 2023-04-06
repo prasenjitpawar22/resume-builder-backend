@@ -1,36 +1,43 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 import { config } from 'dotenv';
+import axios from 'axios'
 
 config();
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const header = req.headers.authorization
-    const token = header?.split(' ')[1]
-    
-    let userId;
-    // console.log(process.env.PRIVATE_KEY);
+const auth = async (req: Request, res: Response, next: NextFunction) => {
+  const header = req.headers.authorization
+  //get token from request 
+  const token = header?.split(' ')[1]
 
-    if (token) {
-      const decodedToken = jwt.verify(token, process.env.PRIVATE_KEY!) as JwtPayload;
-      // console.log('decoded token', decodedToken);
-      userId = decodedToken.id
-      if (req.body.userId && req.body.userId !== userId) {
-        return res.status(403).send('Invalid token user')
-      } else {
-        req.body.userId = userId
-        next();
-      }
-    }
-    else {
-      return res.status(403).send('Authorization token not provided!')
-    }
-  } catch {
-    return res.status(401).json({
-      error: new Error('Invalid request!')
-    });
+  if (!token) {
+    console.log('no token from request');
+
+    return next()
   }
+
+  try {
+
+    const decoded = jwt.decode(token)
+
+    if (!decoded) return next()
+    const exp = (decoded as JwtPayload).exp
+
+    if (exp && Date.now() >= exp * 1000) {
+      console.log('token expired');
+      return next()
+    }
+
+    req.body.userId = decoded.sub
+    return next()
+
+  } catch (error) {
+    // console.log(error);
+    return next()
+  }
+
+
+
 };
 
 export default auth
