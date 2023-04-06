@@ -9,6 +9,9 @@ const formRoutes = Router()
 
 formRoutes.post('/add-summary', auth, async (req: Request, res: Response) => {
 
+    console.log(req.body);
+    if (!req.body.userId) return res.sendStatus(401).send('user not found')
+
     try {
         await db.summary.create({
             data: {
@@ -28,6 +31,8 @@ formRoutes.post('/add-summary', auth, async (req: Request, res: Response) => {
 })
 
 formRoutes.get('/get-summary', auth, async (req: Request, res: Response) => {
+    console.log(req.body);
+    if (!req.body.userId) return res.sendStatus(401).send('user not found')
     try {
         const summary = await db.summary.findFirst({
             where: {
@@ -42,6 +47,10 @@ formRoutes.get('/get-summary', auth, async (req: Request, res: Response) => {
 })
 
 formRoutes.post('/update-summary', auth, async (req: Request, res: Response) => {
+    console.log(req.body);
+    if (!req.body.userId) {
+        return res.sendStatus(401).send('user not found')
+    }
     try {
         const summary = await db.summary.update({
             data: {
@@ -51,7 +60,9 @@ formRoutes.post('/update-summary', auth, async (req: Request, res: Response) => 
                 id: req.body.id,
             }
         })
-        return res.send(summary).statusCode === 200
+        console.log(summary);
+
+        return res.send(summary)
 
     } catch (error) {
         return res.send(error)
@@ -244,17 +255,12 @@ formRoutes.post('/update-education', auth, async (req: Request, res: Response) =
 
 formRoutes.post('/remove-education', auth, async (req: Request, res: Response) => {
     try {
-
-        if (!req.body.userId) return res.status(404).send('user not found')
-
-        const education = await db.education.findMany({
+        await db.education.delete({
             where: {
-                userId: req.body.userId
+                id: req.body.id
             }
-        }).catch((err => {
-            return res.send(err)
-        }))
-        return res.send(education)
+        })
+        return res.send('removed')
     } catch (error) {
         return res.send(error)
     }
