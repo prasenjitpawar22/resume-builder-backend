@@ -6,6 +6,7 @@ import userRoute from "./routes/user/user.routes"
 import resumeRoutes from "./routes/resume/resume.routes"
 import featureRoutes from "./routes/feature/feature.routes"
 import formRoutes from './routes/Forms/formsRoute';
+import path from 'path';
 
 config()
 
@@ -14,6 +15,8 @@ app.use(express.json())
 app.use(cors())
 
 app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'));
+
 const port = process.env.PORT
 
 // app.use('/resume', resumeRoute)
