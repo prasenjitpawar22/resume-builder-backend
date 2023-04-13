@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
+import Handlebars from "handlebars";
 
 // import featureRoute from './';
 import userRoute from "./routes/user/user.routes"
@@ -13,6 +14,8 @@ config()
 const app = express();
 app.use(express.json())
 app.use(cors())
+
+app.set('view engine', 'pug')
 const port = process.env.PORT
 
 // app.use('/resume', resumeRoute)

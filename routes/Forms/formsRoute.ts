@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { Router, Response, Request, response } from "express";
+import { downloadPdf } from "../../helper/downloadPdf";
 import auth from "../../middleware/auth";
 import { db } from "../../utils/db.server";
 
@@ -441,6 +442,63 @@ formRoutes.get('/get-all-certifications', auth, async (req: Request, res: Respon
     } catch (error) {
         return res.send(error)
     }
+})
+
+//******************************resume download page************************************************************
+formRoutes.get('/download/:userId', async (req, res) => {
+    console.log(req.params.userId);
+
+    let data = {}
+
+    const skills = await db.skills.findMany({
+        where: {
+            userId: req.body.userId
+        }
+    })
+
+    const experiences = await db.experience.findMany({
+        where: {
+            userId: req.body.userId
+        }
+    })
+
+    const certifications = await db.certification.findMany({
+        where: {
+            userId: req.body.userId
+        }
+    })
+
+    const contacts = await db.contact.findMany({
+        where: {
+            userId: req.body.userId
+        }
+    })
+
+    const summary = await db.summary.findFirst({
+        where: {
+            userId: req.body.userId,
+        }
+    })
+
+    const educations = await db.education.findMany({
+        where: {
+            userId: req.body.userId,
+        }
+    })
+
+    data = { summary, contacts: contacts[0], certifications, experiences, skills, educations }
+
+    res.render('resume', { data: data })
+})
+
+formRoutes.get('/get-pdf', auth, async (req, res) => {
+    console.log(req.body.userId,);
+
+    const pdf = await downloadPdf(req.body.userId)
+    res.setHeader('Content-Type', 'application/pdf');
+
+    console.log(pdf);
+    return res.send(pdf)
 })
 
 export default formRoutes

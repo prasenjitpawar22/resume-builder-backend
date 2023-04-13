@@ -1,7 +1,7 @@
 // import fs from 'fs'
 import puppeteer from 'puppeteer'
 
-export const downloadPdf = async () => {
+export const downloadPdf = async (userId: string) => {
     // Create a browser instance
     const browser = await puppeteer.launch();
 
@@ -9,7 +9,7 @@ export const downloadPdf = async () => {
     const page = await browser.newPage();
 
     // Website URL to export as pdf
-    const website_url = 'http://localhost:3000/download-resume';
+    const website_url = `http://localhost:8000/build/download/${userId}`;
     // Open URL in current page
     await page.goto(website_url, { waitUntil: 'networkidle0' });
 
@@ -34,4 +34,6 @@ export const downloadPdf = async () => {
     });
     // Close the browser instance
     await browser.close();
+
+    return pdf
 }
