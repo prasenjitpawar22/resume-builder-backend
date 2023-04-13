@@ -1,5 +1,17 @@
-// import fs from 'fs'
-import puppeteer from 'puppeteer'
+// // import fs from 'fs'
+let chrome = {};
+let puppeteer: any;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    // running on the Vercel platform.
+    chrome = require('chrome-aws-lambda');
+    puppeteer = require('puppeteer-core');
+} else {
+    // running locally.
+    puppeteer = require('puppeteer');
+}
+
+// import puppeteer from 'puppeteer'
 
 export const downloadPdf = async (userId: string) => {
     // Create a browser instance
@@ -37,3 +49,19 @@ export const downloadPdf = async (userId: string) => {
 
     return pdf
 }
+
+
+// const getData = async (url) => {
+//   try {
+//     let browser = await puppeteer.launch({
+//       args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+//       defaultViewport: chrome.defaultViewport,
+//       executablePath: await chrome.executablePath,
+//       headless: true,
+//       ignoreHTTPSErrors: true,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     return null;
+//   }
+// }
