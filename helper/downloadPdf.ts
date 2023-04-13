@@ -1,5 +1,5 @@
 // // import fs from 'fs'
-let chrome = {};
+let chrome: any = {};
 let puppeteer: any;
 
 if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
@@ -15,8 +15,14 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 
 export const downloadPdf = async (userId: string) => {
     // Create a browser instance
-    const browser = await puppeteer.launch();
-
+    // const browser = await puppeteer.launch();
+    let browser = await puppeteer.launch({
+        args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+        defaultViewport: chrome.defaultViewport,
+        executablePath: await chrome.executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+    });
     // Create a new page
     const page = await browser.newPage();
 
