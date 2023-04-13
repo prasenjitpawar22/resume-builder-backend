@@ -21,9 +21,17 @@ export const downloadPdf = async (userId: string) => {
     const page = await browser.newPage();
 
     // Website URL to export as pdf
-    const website_url = `https://backend-be.vercel.app/build/download/${userId}`;
+    let website_url = ''
+    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        website_url = `https://backend-be.vercel.app/build/download/${userId}`;
+    }
+    else {
+        website_url = `http://localhost:8000/build/download/${userId}`
+    }
+
     // Open URL in current page
     await page.goto(website_url, { waitUntil: 'networkidle0' });
+    console.log(process.env.AWS_LAMBDA_FUNCTION_VERSION);
 
     // //Get HTML content from HTML file
     // const html = fs.readFileSync('sample.html', 'utf-8');
