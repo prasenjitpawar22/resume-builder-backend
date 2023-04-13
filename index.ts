@@ -1,9 +1,7 @@
 import express, { Router } from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
-import Handlebars from "handlebars";
 
-// import featureRoute from './';
 import userRoute from "./routes/user/user.routes"
 import resumeRoutes from "./routes/resume/resume.routes"
 import featureRoutes from "./routes/feature/feature.routes"
