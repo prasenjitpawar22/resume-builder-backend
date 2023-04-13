@@ -9,7 +9,7 @@ export const downloadPdf = async (userId: string) => {
     const page = await browser.newPage();
 
     // Website URL to export as pdf
-    const website_url = `http://localhost:8000/build/download/${userId}`;
+    const website_url = `https://backend-be.vercel.app/build/download/${userId}`;
     // Open URL in current page
     await page.goto(website_url, { waitUntil: 'networkidle0' });
 
