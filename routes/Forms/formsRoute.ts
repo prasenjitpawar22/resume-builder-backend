@@ -1,6 +1,5 @@
 import { randomUUID } from "crypto";
 import { Router, Response, Request, response } from "express";
-import { downloadPdf } from "../../helper/downloadPdf";
 import auth from "../../middleware/auth";
 import { db } from "../../utils/db.server";
 
