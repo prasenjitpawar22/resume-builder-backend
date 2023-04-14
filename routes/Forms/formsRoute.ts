@@ -3,7 +3,15 @@ import { Router, Response, Request, response } from "express";
 import auth from "../../middleware/auth";
 import { db } from "../../utils/db.server";
 
-import chromium from 'chrome-aws-lambda';
+let chrome = {};
+let puppeteer;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    chrome = require("chrome-aws-lambda");
+    puppeteer = require("puppeteer-core");
+} else {
+    puppeteer = require("puppeteer");
+}
 
 
 const formRoutes = Router()
@@ -494,33 +502,53 @@ formRoutes.get('/download/:userId', async (req, res) => {
 formRoutes.get('/get-pdf', auth, async (req, res) => {
     console.log(req.body.userId,);
 
-    const browser = await chromium.puppeteer.launch({
-        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-    })
+    let options = {};
+
+    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        options = {
+            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath,
+            headless: true,
+            ignoreHTTPSErrors: true,
+        };
+    }
+
+    // const browser = await chromium.puppeteer.launch({
+    //     args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+    //     defaultViewport: chromium.defaultViewport,
+    //     executablePath: await chromium.executablePath,
+    //     headless: true,
+    //     ignoreHTTPSErrors: true,
+    // })
 
     // Create a new page
-    const page = await browser.newPage();
+    try {
 
-    let website_url = `https://backend-be.vercel.app/build/download/${req.body.userId}`;
+        const page = await browser.newPage();
 
-    // Open URL in current page
-    await page.goto(website_url, { waitUntil: 'networkidle0' });
-    await page.emulateMediaType('screen');
-    const pdf = await page.pdf({
-        path: 'result.pdf',
-        format: 'a4',
-    });
-    await browser.close();
+        let website_url = `https://backend-be.vercel.app/build/download/${req.body.userId}`;
 
-    // const pdf = await downloadPdf(req.body.userId)
-    res.setHeader('Content-Type', 'application/pdf');
+        // Open URL in current page
+        await page.goto(website_url, { waitUntil: 'networkidle0' });
+        await page.emulateMediaType('screen');
+        const pdf = await page.pdf({
+            path: 'result.pdf',
+            format: 'a4',
+        });
+        await browser.close();
 
-    console.log(pdf);
-    return res.send(pdf)
+        // const pdf = await downloadPdf(req.body.userId)
+        res.setHeader('Content-Type', 'application/pdf');
+
+        console.log(pdf);
+        return res.send(pdf)
+    }
+    catch (err) {
+        console.error(err);
+        return res.send(err)
+    }
+
 })
 
 export default formRoutes
