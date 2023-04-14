@@ -6,8 +6,6 @@ import { db } from "../../utils/db.server";
 import chromium from 'chrome-aws-lambda';
 
 
-
-
 const formRoutes = Router()
 
 formRoutes.post('/add-summary', auth, async (req: Request, res: Response) => {
