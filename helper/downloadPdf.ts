@@ -13,7 +13,9 @@
 //     // running locally.
 //     puppeteer = require('puppeteer');
 // }
-import chromium from 'chrome-aws-lambda';
+// import chromium from 'chrome-aws-lambda';
+import edgeChromium from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer-core'
 
 
 // import puppeteer from 'puppeteer'
@@ -21,13 +23,19 @@ import chromium from 'chrome-aws-lambda';
 export const downloadPdf = async (userId: string) => {
     // Create a browser instance
     // const browser = await puppeteer.launch();
+
     try {
-        let browser = await chromium.puppeteer.launch({
-            args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath,
-            headless: true,
-            ignoreHTTPSErrors: true,
+        // let browser = await puppeteer.launch({
+        //     args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+        //     defaultViewport: chromium.defaultViewport,
+        //     executablePath: await chromium.executablePath,
+        //     headless: true,
+        //     ignoreHTTPSErrors: true,
+        // })
+        const browser = await puppeteer.launch({
+            executablePath: await edgeChromium.executablePath,
+            args: edgeChromium.args,
+            headless: false,
         })
         // Create a new page
         const page = await browser.newPage();
@@ -43,19 +51,12 @@ export const downloadPdf = async (userId: string) => {
 
         // Open URL in current page
         await page.goto(website_url, { waitUntil: 'networkidle0' });
-        console.log(process.env.AWS_LAMBDA_FUNCTION_VERSION);
-
         await page.emulateMediaType('screen');
-
-
         const pdf = await page.pdf({
             path: 'result.pdf',
             format: 'a4',
         });
-
-
         await browser.close();
-
         return pdf
     } catch (err) {
         console.error(err);
