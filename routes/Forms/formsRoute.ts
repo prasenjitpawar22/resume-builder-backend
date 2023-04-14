@@ -1,3 +1,4 @@
+import axios from "axios";
 import { randomUUID } from "crypto";
 import { Router, Response, Request, response } from "express";
 import auth from "../../middleware/auth";
@@ -492,7 +493,21 @@ formRoutes.get('/get-pdf', auth, async (req, res) => {
     console.log(req.body.userId,);
 
     try {
-        return res.send('ok')
+        let pdf = ''
+        await axios.get('https://puppeteer-vercel-one.vercel.app/api')
+            .then((res) => {
+                console.log(res.data);
+                pdf = res.data
+            })
+            .catch((err) => {
+                console.log(err)
+                return res.send(err)
+            })
+
+        res.setHeader('Content-Type', 'application/pdf');
+        console.log(pdf);
+
+        return res.send(pdf)
     }
     catch (err) {
         console.error(err);
