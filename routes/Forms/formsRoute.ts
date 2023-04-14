@@ -442,8 +442,8 @@ formRoutes.get('/get-all-certifications', auth, async (req: Request, res: Respon
 })
 
 //******************************resume download page************************************************************
-formRoutes.get('/download/:userId', async (req, res) => {
-    console.log(req.params.userId);
+formRoutes.get('/download', async (req, res) => {
+    // console.log(req.params.userId);
 
     let data = {}
 
