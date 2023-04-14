@@ -494,7 +494,13 @@ formRoutes.get('/get-pdf', auth, async (req, res) => {
 
     try {
         let pdf = ''
-        await axios.get('https://puppeteer-vercel-one.vercel.app/api')
+        await axios.get('https://puppeteer-vercel-one.vercel.app/api',
+            {
+                responseType: 'arraybuffer',
+                headers: {
+                    Accept: 'application/pdf',
+                },
+            })
             .then((res) => {
                 console.log(res.data);
                 pdf = res.data
