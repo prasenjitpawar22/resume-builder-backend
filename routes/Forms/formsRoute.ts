@@ -4,6 +4,9 @@ import { downloadPdf } from "../../helper/downloadPdf";
 import auth from "../../middleware/auth";
 import { db } from "../../utils/db.server";
 
+import chromium from 'chrome-aws-lambda';
+
+
 
 
 const formRoutes = Router()
@@ -494,7 +497,29 @@ formRoutes.get('/download/:userId', async (req, res) => {
 formRoutes.get('/get-pdf', auth, async (req, res) => {
     console.log(req.body.userId,);
 
-    const pdf = await downloadPdf(req.body.userId)
+    const browser = await chromium.puppeteer.launch({
+        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+    })
+
+    // Create a new page
+    const page = await browser.newPage();
+
+    let website_url = `https://backend-be.vercel.app/build/download/${req.body.userId}`;
+
+    // Open URL in current page
+    await page.goto(website_url, { waitUntil: 'networkidle0' });
+    await page.emulateMediaType('screen');
+    const pdf = await page.pdf({
+        path: 'result.pdf',
+        format: 'a4',
+    });
+    await browser.close();
+
+    // const pdf = await downloadPdf(req.body.userId)
     res.setHeader('Content-Type', 'application/pdf');
 
     console.log(pdf);
