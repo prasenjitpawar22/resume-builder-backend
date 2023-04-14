@@ -443,7 +443,7 @@ formRoutes.get('/get-all-certifications', auth, async (req: Request, res: Respon
 })
 
 //******************************resume download page************************************************************
-formRoutes.get('/download', async (req, res) => {
+formRoutes.get('/downloadd', async (req, res) => {
     // console.log(req.params.userId);
 
     let data = {}
@@ -494,7 +494,7 @@ formRoutes.get('/get-pdf', auth, async (req, res) => {
 
     try {
         let pdf = ''
-        await axios.get('https://puppeteer-vercel-one.vercel.app/api',
+        await axios.get(`${process.env.PUPPETEER_API}`,
             {
                 responseType: 'arraybuffer',
                 headers: {
